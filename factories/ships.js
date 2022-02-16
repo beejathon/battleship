@@ -1,7 +1,8 @@
-const createShip = (length) => {
+const createShip = (length, type) => {
   const ship = {}
   ship.hits = [];
   ship.sunk = 'afloat'
+  ship.type = type;
 
   for (let i = 1; i <= length; i++) {
     ship.hits.push(i);

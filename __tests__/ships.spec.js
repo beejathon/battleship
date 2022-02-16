@@ -1,21 +1,22 @@
 const createShip = require('../factories/ships.js')
 
 describe("Ship factory:", () => {
-  const ship2 = createShip(2);
+  const ship = createShip(2, 'Patrol Boat');
   
-  test("instantiates ship object with length", () => {
-    expect(ship2.hits).toEqual([1,2]);
+  test("instantiates ship object with length and type", () => {
+    expect(ship.hits.length).toEqual(2);
+    expect(ship.type).toBe('Patrol Boat');
   })
 
   test("records hits", () => {
-    ship2.hit(1);
-    expect(ship2.hits).toEqual([2]);
+    ship.hit(1);
+    expect(ship.hits).toEqual([2]);
   })
 
   test("calculates sunk status", () => {
-    ship2.hit(1);
-    ship2.hit(2);
-    ship2.isSunk();
-    expect(ship2.sunk).toBe('sunk');
+    ship.hit(1);
+    ship.hit(2);
+    ship.isSunk();
+    expect(ship.sunk).toBe('sunk');
   })
 })
