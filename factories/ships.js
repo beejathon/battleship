@@ -1,7 +1,7 @@
 const createShip = (length, type) => {
   const ship = {}
   ship.hits = [];
-  ship.sunk = 'afloat'
+  ship.status = 'afloat'
   ship.type = type;
 
   for (let i = 1; i <= length; i++) {
@@ -13,7 +13,7 @@ const createShip = (length, type) => {
   }
 
   ship.isSunk = function() {
-    this.hits.length === 0 ? this.sunk = 'sunk' : this.sunk = 'afloat';
+    this.hits.length === 0 ? this.status = 'sunk' : this.status = 'afloat';
   }
 
   return ship;

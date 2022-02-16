@@ -17,6 +17,6 @@ describe("Ship factory:", () => {
     ship.hit(1);
     ship.hit(2);
     ship.isSunk();
-    expect(ship.sunk).toBe('sunk');
+    expect(ship.status).toBe('sunk');
   })
 })

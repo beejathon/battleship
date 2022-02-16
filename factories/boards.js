@@ -3,7 +3,6 @@ const createShip = require('../factories/ships.js')
 const createBoard = () => {
   const board = {}
   board.array = [];
-
   for (i = 0; i <= 9; i++) {
     board.array.push(new Array)
     for (j = 0; j <= 9; j++) {
@@ -17,6 +16,7 @@ const createBoard = () => {
   };
 
   board.fleet = [];
+  board.log = [];
 
   board.placeShip = function(y, x, direction, length, type) {
     this.fleet.push(createShip(length, type))
@@ -45,14 +45,20 @@ const createBoard = () => {
       let type = this.array[y][x].shipType;
       let index = this.findShip(type);
       this.fleet[index].hits.pop();
+      this.fleet[index].isSunk();
       this.array[y][x].isHit = true;
     } else {
       this.array[y][x].isMissed = true;
+      this.log.push(`miss ${x},${y}`)
     }
   };
 
   board.findShip = function(type) {
     return this.fleet.indexOf(this.fleet.find((ship) => ship.type == type))
+  }
+
+  board.isFleetSunk = function() {
+    return this.fleet.every((ship) => ship.status == 'sunk')
   }
 
   return board;
