@@ -1,4 +1,4 @@
-const createBoard = require('../factories/boards.js')
+const createBoard = require('../factories/gameBoard.js')
 
 describe("Gameboard factory:", () => {
   const board = createBoard();

@@ -1,4 +1,4 @@
-const createShip = require('../factories/ships.js')
+const createShip = require('./ship.js')
 
 const createBoard = () => {
   const board = {}
