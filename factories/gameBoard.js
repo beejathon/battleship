@@ -19,6 +19,13 @@ const createBoard = () => {
   board.log = [];
 
   board.placeShip = function(y, x, direction, length, type) {
+
+    //check if placement obeys board rules
+    let placementIsValid = this.isPlacementValid(y, x, length);
+    
+    if (!placementIsValid) return;
+
+    //otherwise, push ship object to fleet and mark board spaces
     this.fleet.push(createShip(length, type))
     
     if (direction === 'horizontal') {
@@ -44,7 +51,7 @@ const createBoard = () => {
     if (this.array[y][x].hasShip == true) {
       let type = this.array[y][x].shipType;
       let index = this.findShip(type);
-      this.fleet[index].hits.pop();
+      this.fleet[index].hit();
       this.fleet[index].isSunk();
       this.array[y][x].isHit = true;
     } else {
@@ -60,6 +67,38 @@ const createBoard = () => {
   board.isFleetSunk = function() {
     return this.fleet.every((ship) => ship.status == 'sunk')
   }
+
+  board.isPlacementValid = function(y, x, length) {
+    if (y < 0 || y > 9) {
+      return false;
+    } else if (x < 0 || x > 9) {
+      return false;
+    } else if (y + length - 1 > 9) {
+      return false;
+    } else if (x + length - 1 > 9) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+//  board.isNoShip = function (y, x, direction, length) {
+//    if (direction === 'horizontal') {
+//      for (i = 1; i < length; i++) {
+//        for (j = x; j < x + length; j++) {
+//          if (this.array[y][j].hasShip === true) return false;
+//        }
+//      }
+//    } else if (direction === 'vertical') {
+//      for (i = 1; i < length; i++) {
+//        for (j = y; j < y + length; j++){
+//          if (this.array[j][x].hasShip === true) return false;
+//        }
+//      }
+//    } else {
+//      return true;
+//    }
+//  }
 
   return board;
 

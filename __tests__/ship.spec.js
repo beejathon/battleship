@@ -4,13 +4,13 @@ describe("Ship factory:", () => {
   const ship = createShip(2, 'Patrol Boat');
   
   test("instantiates ship object with length and type", () => {
-    expect(ship.hits.length).toEqual(2);
+    expect(ship.hits.length).toBe(2);
     expect(ship.type).toBe('Patrol Boat');
   })
 
   test("records hits", () => {
-    ship.hit(1);
-    expect(ship.hits).toEqual([2]);
+    ship.hit();
+    expect(ship.hits.length).toBe(1);
   })
 
   test("calculates sunk status", () => {

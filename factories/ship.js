@@ -8,8 +8,8 @@ const createShip = (length, type) => {
     ship.hits.push(i);
   }
 
-  ship.hit = function(number) {
-    this.hits = this.hits.filter((element) => element != number);
+  ship.hit = function() {
+    this.hits.pop();
   }
 
   ship.isSunk = function() {

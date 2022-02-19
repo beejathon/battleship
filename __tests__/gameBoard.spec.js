@@ -11,7 +11,7 @@ describe("Gameboard factory:", () => {
   })
 
   test("instantiates ship object into fleet array", () => {
-    expect(board.fleet[0].hits).toEqual([1,2])
+    expect(board.fleet[0].hits.length).toBe(2)
     expect(board.fleet[0].type).toBe('patrol')
   }) 
 
@@ -45,13 +45,10 @@ describe("Gameboard factory:", () => {
   test("receives attack and board records hit", () => {
     board.receiveAttack(1, 0)
 
-    expect(board.array[0][0].isHit).toBe(false)
     expect(board.array[1][0].isHit).toBe(true)
     expect(board.array[2][0].isHit).toBe(false)
-  })
-
-  test("receives attack and ship object in fleet array records hit", () => {
-    expect(board.fleet[1].hits).toEqual([1,2])
+    expect(board.array[3][0].isHit).toBe(false)
+    expect(board.fleet[1].hits.length).toBe(2)
   })
 
   test("reports sunken fleet false", () => {
@@ -59,11 +56,10 @@ describe("Gameboard factory:", () => {
   })
 
   test("reports sunken fleet true", () => {
-    board.receiveAttack(1,0)
-    board.receiveAttack(2,0)
-    board.receiveAttack(3,0)
-    board.receiveAttack(0,2)
-    board.receiveAttack(0,3)
+    board.receiveAttack(2, 0)
+    board.receiveAttack(3, 0)
+    board.receiveAttack(0, 2)
+    board.receiveAttack(0, 3)
 
     expect(board.isFleetSunk()).toBe(true)
   })
