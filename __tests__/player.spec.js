@@ -40,22 +40,13 @@ describe("Player factory:", () => {
 
   })
 
-//  test("players cannot place ships onto other ships", () => {
-//    player1.board.placeShip(0, 0, 'horizontal', 5, 'carrier');
-//    player2.board.placeShip(0, 1, 'vertical', 5, 'carrier');
-//
-//    expect(player1.board.array[0][0].hasShip).toBe(false)
-//    expect(player1.board.array[0][1].shipType).toBe('submarine')
-//    expect(player1.board.array[0][2].shipType).toBe('submarine')
-//    expect(player1.board.array[0][3].shipType).toBe('submarine')
-//    expect(player1.board.array[0][4].hasShip).toBe(false)
-//
-//    expect(player1.board.array[0][1].hasShip).toBe(false)
-//    expect(player1.board.array[1][1].shipType).toBe('cruiser')
-//    expect(player1.board.array[2][1].shipType).toBe('cruiser')
-//    expect(player1.board.array[3][1].shipType).toBe('cruiser')
-//    expect(player1.board.array[4][1].hasShip).toBe(false)
-//  })
+  test("players cannot place overlapping ships", () => {
+    player1.board.placeShip(0, 0, 'horizontal', 5, 'carrier');
+    player2.board.placeShip(0, 1, 'vertical', 5, 'carrier');
+
+    expect(player1.board.fleet.length).toBe(1)
+    expect(player2.board.fleet.length).toBe(1)
+  })
 
   test("players can attack each others ships", () => {
     player1.board.receiveAttack(0, 0);
@@ -66,6 +57,11 @@ describe("Player factory:", () => {
 
     expect(player2.board.array[1][1].isHit).toBe(true)
     expect(player2.board.fleet[0].hits.length).toBe(2)
+  })
+
+  test("check array", () => {
+    expect(player1.board.array).toBe(1)
+    expect(player2.board.array).toBe(1)
   })
 
 })

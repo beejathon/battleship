@@ -22,28 +22,26 @@ const createBoard = () => {
 
     //check if placement obeys board rules
     let placementIsValid = this.isPlacementValid(y, x, length);
-    
     if (!placementIsValid) return;
+
+    let spaceIsClear = this.isSpaceClear(y, x, direction, length);
+    if (!spaceIsClear) return;
 
     //otherwise, push ship object to fleet and mark board spaces
     this.fleet.push(createShip(length, type))
     
     if (direction === 'horizontal') {
-      for (i = 1; i < length; i++) {
-        for (j = x; j < x + length; j++) {
-          this.array[y][j].hasShip = true;
-          this.array[y][j].shipType = type;
-        }
-      }  
+      for (i = x; i < x + length; i++) {
+        this.array[y][i].hasShip = true;
+        this.array[y][i].shipType = type;
+      }
     }
 
     if (direction === 'vertical') {
-      for (i = 1; i < length; i++) {
-        for (j = y; j < y + length; j++) {
-          this.array[j][x].hasShip = true;
-          this.array[j][x].shipType = type;
-        }
-      }  
+      for (i = y; i < y + length; i++) {
+        this.array[i][x].hasShip = true;
+        this.array[i][x].shipType = type;
+      }
     }
   };
 
@@ -82,23 +80,19 @@ const createBoard = () => {
     }
   }
 
-//  board.isNoShip = function (y, x, direction, length) {
-//    if (direction === 'horizontal') {
-//      for (i = 1; i < length; i++) {
-//        for (j = x; j < x + length; j++) {
-//          if (this.array[y][j].hasShip === true) return false;
-//        }
-//      }
-//    } else if (direction === 'vertical') {
-//      for (i = 1; i < length; i++) {
-//        for (j = y; j < y + length; j++){
-//          if (this.array[j][x].hasShip === true) return false;
-//        }
-//      }
-//    } else {
-//      return true;
-//    }
-//  }
+  board.isSpaceClear = function(y, x, direction, length) {
+    if (direction === 'horizontal') {
+      for (i = x; i < x + length; i++) {
+        if (this.array[y][i].hasShip === true) return false;
+      }
+    }
+    if (direction === 'vertical') {
+      for (i = y; i < y + length; i++) {
+        if (this.array[i][x].hasShip === true) return false;
+      }
+    }
+    return true;
+  }
 
   return board;
 
