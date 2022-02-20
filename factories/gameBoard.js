@@ -2,6 +2,8 @@ const createShip = require('./ship.js')
 
 const createBoard = () => {
   const board = {}
+
+  //create 10x10 2D array
   board.array = [];
   for (i = 0; i <= 9; i++) {
     board.array.push(new Array)
@@ -27,9 +29,10 @@ const createBoard = () => {
     let spaceIsClear = this.isSpaceClear(y, x, direction, length);
     if (!spaceIsClear) return;
 
-    //otherwise, push ship object to fleet and mark board spaces
+    //otherwise, push ship object to fleet
     this.fleet.push(createShip(length, type))
     
+    //mark board spaces
     if (direction === 'horizontal') {
       for (i = x; i < x + length; i++) {
         this.array[y][i].hasShip = true;
@@ -46,6 +49,7 @@ const createBoard = () => {
   };
 
   board.receiveAttack = function(y, x) {
+     //check if space has ship or not
     if (this.array[y][x].hasShip == true) {
       let type = this.array[y][x].shipType;
       let index = this.findShip(type);

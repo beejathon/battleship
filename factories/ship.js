@@ -1,9 +1,10 @@
 const createShip = (length, type) => {
   const ship = {}
-  ship.hits = [];
   ship.status = 'afloat'
   ship.type = type;
 
+  //add ship hit points based on length
+  ship.hits = [];
   for (let i = 1; i <= length; i++) {
     ship.hits.push(i);
   }

@@ -49,8 +49,8 @@ describe("Player factory:", () => {
   })
 
   test("players can attack each others ships", () => {
-    player1.board.receiveAttack(0, 0);
-    player2.board.receiveAttack(1, 1);
+    player1.attack(player2.board, 1, 1);
+    player2.attack(player1.board, 0, 0);
 
     expect(player1.board.array[0][0].isMissed).toBe(true)
     expect(player1.board.fleet[0].hits.length).toBe(3)
@@ -59,9 +59,12 @@ describe("Player factory:", () => {
     expect(player2.board.fleet[0].hits.length).toBe(2)
   })
 
-  test("check array", () => {
-    expect(player1.board.array).toBe(1)
-    expect(player2.board.array).toBe(1)
+  test("computer player generates random attacks", () => {
+    const human = createPlayer('user', 'Philippe');
+    const computer = createPlayer('computer', 'Lie Bot');
+    const coords = computer.randomAttack(human.board);
+
+    expect(human.board.array[coords[0]][coords[1]].isMissed).toBe(true)
   })
 
 })
