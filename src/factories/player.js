@@ -1,4 +1,4 @@
-const createBoard = require("./gameBoard")
+const createBoard = require('./gameBoard.js')
 
 const createPlayer = (type, name) => {
   const player = {}

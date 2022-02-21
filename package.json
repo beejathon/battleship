@@ -1,12 +1,19 @@
 {
   "devDependencies": {
-    "jest": "^27.4.7"
+    "css-loader": "^6.6.0",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.4.7",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2"
   },
   "scripts": {
     "test": "jest",
-    "watch": "jest --watch *.js"
+    "watch": "jest --watch *.js",
+    "build": "webpack"
   },
   "dependencies": {
     "@types/jest": "^27.4.0"
-  }
+  },
+  "private": true
 }
