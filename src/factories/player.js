@@ -1,5 +1,5 @@
 const randomCoords = require('../helpers/helpers.js');
-const createBoard = require('./gameBoard.js')
+const createBoard = require('./gameBoard.js');
 
 const createPlayer = (type, name) => {
   const player = {}
@@ -29,7 +29,6 @@ const createPlayer = (type, name) => {
     if (board.array[coords[0]][coords[1]].isMissed === true) return false;
     return true;
   }
-
 
   return player;
 };

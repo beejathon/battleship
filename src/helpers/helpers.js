@@ -6,8 +6,7 @@ const randomCoords = function() {
 }
 
 const randomDirection = function() {
-  let value = Math.floor(Math.random() * 1);
-  let direction = (value == 0) ? 'horizontal' : 'vertical';
+  let direction = Math.floor(Math.random() * 2) === 1 ? 'horizontal' : 'vertical';
 
   return direction;
 }

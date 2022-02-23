@@ -4,7 +4,7 @@ describe("Gameboard factory:", () => {
   const board = createBoard();
 
   test("instantiates 10 x 10 board object", () => {
-    board.placeShip(0, 2, 'horizontal', 2, 'patrol boat')
+    board.placeShip(0, 2, 'horizontal', {length: 2, type: 'patrol boat'})
 
     expect(board.array.length).toBe(10)
     expect(board.array[0].length).toBe(10)
@@ -23,7 +23,7 @@ describe("Gameboard factory:", () => {
   })
 
   test("places ship onto board vertically", () => {
-    board.placeShip(1, 0, 'vertical', 3, 'submarine')
+    board.placeShip(1, 0, 'vertical', {length: 3, type: 'submarine'})
 
     expect(board.array[0][0].hasShip).toBe(false)
     expect(board.array[1][0].hasShip).toBe(true)
@@ -62,6 +62,25 @@ describe("Gameboard factory:", () => {
     board.receiveAttack(0, 3)
 
     expect(board.isFleetSunk()).toBe(true)
+  })
+
+  test("randomly populates board", () => {
+    const random = createBoard();
+    random.populateBoard();
+
+    expect(random.fleet.length).toBe(5)
+    expect(random.array).toEqual(
+      expect.arrayContaining([
+        expect.arrayContaining([
+          expect.objectContaining({hasShip: true}),
+          expect.objectContaining({shipType: 'carrier'}),
+          expect.objectContaining({shipType: 'battleship'}),
+          expect.objectContaining({shipType: 'submarine'}),
+          expect.objectContaining({shipType: 'destroyer'}),
+          expect.objectContaining({shipType: 'patrol boat'}),
+        ])
+      ])
+    )
   })
 
 })  

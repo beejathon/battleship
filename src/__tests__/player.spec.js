@@ -15,8 +15,8 @@ describe("Player factory:", () => {
   })
 
   test("players can place ships onto own board", () => {
-    player1.board.placeShip(0, 1, 'horizontal', 3, 'submarine');
-    player2.board.placeShip(1, 1, 'vertical', 3, 'cruiser');
+    player1.board.placeShip(0, 1, 'horizontal', {length: 3, type: 'submarine'});
+    player2.board.placeShip(1, 1, 'vertical', {length: 3, type: 'destroyer'});
 
     expect(player1.board.array[0][1].hasShip).toBe(true)
     expect(player1.board.array[0][2].hasShip).toBe(true)
@@ -30,19 +30,35 @@ describe("Player factory:", () => {
   })
 
   test("players cannot place ships outside of board", () => {
-    player1.board.placeShip(-1, 10, 'horizontal', 2, 'patrol');
-    player2.board.placeShip(10, -1, 'vertical', 2, 'patrol');
-    player1.board.placeShip(0, 7, 'horizontal', 4, 'battleship');
-    player2.board.placeShip(7, 0, 'vertical', 4, 'battleship');
+    player1.board.placeShip(-1, 10, 'horizontal', {length: 2, type: 'patrol boat'});
+    player2.board.placeShip(10, -1, 'vertical', {length: 2, type: 'patrol boat'});
+    player1.board.placeShip(0, 7, 'horizontal', {length: 4, type: 'battleship'});
+    player2.board.placeShip(7, 0, 'vertical', {length: 4, type: 'battleship'});
 
     expect(player1.board.fleet.length).toBe(1)
     expect(player2.board.fleet.length).toBe(1)
-
+    expect(player1.board.array).toEqual(
+      expect.arrayContaining([
+        expect.arrayContaining([
+          expect.objectContaining({hasShip: true}),
+          expect.objectContaining({shipType: 'submarine'}),
+        ])
+      
+      ])
+    )
+    expect(player2.board.array).toEqual(
+      expect.arrayContaining([
+        expect.arrayContaining([
+          expect.objectContaining({hasShip: true}),
+          expect.objectContaining({shipType: 'destroyer'}),
+        ])
+      ])
+    )
   })
 
   test("players cannot place overlapping ships", () => {
-    player1.board.placeShip(0, 0, 'horizontal', 5, 'carrier');
-    player2.board.placeShip(0, 1, 'vertical', 5, 'carrier');
+    player1.board.placeShip(0, 0, 'horizontal', {length: 5, type: 'carrier'});
+    player2.board.placeShip(0, 1, 'vertical', {length: 5, type: 'carrier'});
 
     expect(player1.board.fleet.length).toBe(1)
     expect(player2.board.fleet.length).toBe(1)
