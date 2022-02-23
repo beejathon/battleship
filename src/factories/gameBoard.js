@@ -3,6 +3,9 @@ const createShip = require('./ship.js')
 const createBoard = () => {
   const board = {}
 
+  board.fleet = [];
+  board.log = [];
+
   //create 10x10 2D array
   board.array = [];
   for (i = 0; i <= 9; i++) {
@@ -17,11 +20,7 @@ const createBoard = () => {
     }
   };
 
-  board.fleet = [];
-  board.log = [];
-
   board.placeShip = function(y, x, direction, length, type) {
-
     //check if placement obeys board rules
     let placementIsValid = this.isPlacementValid(y, x, length);
     if (!placementIsValid) return;

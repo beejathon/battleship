@@ -4,15 +4,15 @@ describe("Gameboard factory:", () => {
   const board = createBoard();
 
   test("instantiates 10 x 10 board object", () => {
-    board.placeShip(0, 2, 'horizontal', 2, 'patrol')
+    board.placeShip(0, 2, 'horizontal', 2, 'patrol boat')
 
     expect(board.array.length).toBe(10)
     expect(board.array[0].length).toBe(10)
   })
 
-  test("instantiates ship object into fleet array", () => {
+  test("instantiates ship objects into fleet array", () => {
     expect(board.fleet[0].hits.length).toBe(2)
-    expect(board.fleet[0].type).toBe('patrol')
+    expect(board.fleet[0].type).toBe('patrol boat')
   }) 
 
   test("places ship onto board horizontally", () => {
