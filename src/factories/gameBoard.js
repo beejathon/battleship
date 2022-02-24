@@ -1,6 +1,5 @@
 const createShip = require('./ship.js')
 const randomCoords = require('../helpers/helpers.js');
-const randomDirection = require('../helpers/helpers.js');
 
 const createBoard = () => {
   const board = {}
@@ -24,8 +23,8 @@ const createBoard = () => {
 
   board.placeShip = function(y, x, direction, ship) {
     //check if placement obeys board rules
-    if (!this.isPlacementValid(y, x, ship.length)) return;
-    if (!this.isSpaceClear(y, x, direction, ship.length)) return;
+    if (!this.isPlacementValid(y, x, ship.length)) return false;
+    if (!this.isSpaceClear(y, x, direction, ship.length)) return false;
 
     //otherwise, push ship object to fleet
     this.fleet.push(createShip(ship.length, ship.type))
@@ -44,6 +43,8 @@ const createBoard = () => {
         this.array[i][x].shipType = ship.type;
       }
     }
+
+    return true;
   };
 
   board.receiveAttack = function(y, x) {
@@ -72,17 +73,12 @@ const createBoard = () => {
   };
 
   board.isPlacementValid = function(y, x, length) {
-    if (y < 0 || y > 9) {
-      return false;
-    } else if (x < 0 || x > 9) {
-      return false;
-    } else if (y + length - 1 > 9) {
-      return false;
-    } else if (x + length - 1 > 9) {
-      return false;
-    } else {
-      return true;
-    }
+    if (y < 0 || y > 9) return false;
+    if (x < 0 || x > 9) return false;
+    if (y + length - 1 > 9) return false;
+    if (x + length - 1 > 9) return false;
+
+    return true;
   };
 
   board.isSpaceClear = function(y, x, direction, length) {
@@ -109,13 +105,13 @@ const createBoard = () => {
     ]
 
     let coords = randomCoords();
-    let direction = randomDirection();
+    let direction = 'horizontal'
 
     ships.forEach((ship) => {
-      do {
+      while (!this.placeShip(coords[0], coords[1], direction, ship)) {
         coords = randomCoords();
-        direction = randomDirection();
-      } while (!this.placeShip(coords[0], coords[1], direction, ship))
+        direction = Math.floor(Math.random() * 2) === 1 ? 'vertical' : 'horizontal';
+      }
     })
 
   };

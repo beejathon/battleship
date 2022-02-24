@@ -37,23 +37,6 @@ describe("Player factory:", () => {
 
     expect(player1.board.fleet.length).toBe(1)
     expect(player2.board.fleet.length).toBe(1)
-    expect(player1.board.array).toEqual(
-      expect.arrayContaining([
-        expect.arrayContaining([
-          expect.objectContaining({hasShip: true}),
-          expect.objectContaining({shipType: 'submarine'}),
-        ])
-      
-      ])
-    )
-    expect(player2.board.array).toEqual(
-      expect.arrayContaining([
-        expect.arrayContaining([
-          expect.objectContaining({hasShip: true}),
-          expect.objectContaining({shipType: 'destroyer'}),
-        ])
-      ])
-    )
   })
 
   test("players cannot place overlapping ships", () => {

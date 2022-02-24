@@ -14,11 +14,10 @@ const createShip = (length, type) => {
   }
 
   ship.isSunk = function() {
-    this.hits.length === 0 ? this.status = 'sunk' : this.status = 'afloat';
+    this.status = this.hits.length === 0 ? 'sunk' : 'afloat';
   }
 
   return ship;
-
 };
 
 module.exports = createShip;

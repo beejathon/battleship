@@ -65,20 +65,27 @@ describe("Gameboard factory:", () => {
   })
 
   test("randomly populates board", () => {
-    const random = createBoard();
-    random.populateBoard();
+    const randomBoard = createBoard();
+    randomBoard.populateBoard();
 
-    expect(random.fleet.length).toBe(5)
-    expect(random.array).toEqual(
+    expect(randomBoard.fleet.length).toBe(5)
+    expect(randomBoard.array).toEqual(
       expect.arrayContaining([
         expect.arrayContaining([
-          expect.objectContaining({hasShip: true}),
-          expect.objectContaining({shipType: 'carrier'}),
+          expect.objectContaining({shipType: 'carrier'})
+        ]),
+        expect.arrayContaining([
           expect.objectContaining({shipType: 'battleship'}),
+        ]),
+        expect.arrayContaining([
           expect.objectContaining({shipType: 'submarine'}),
+        ]),
+        expect.arrayContaining([
           expect.objectContaining({shipType: 'destroyer'}),
+        ]),
+        expect.arrayContaining([
           expect.objectContaining({shipType: 'patrol boat'}),
-        ])
+        ]),
       ])
     )
   })
