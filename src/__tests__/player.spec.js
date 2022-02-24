@@ -62,10 +62,16 @@ describe("Player factory:", () => {
     const human = createPlayer('user', 'Philippe');
     const computer = createPlayer('computer', 'Lie Bot');
     computer.attack(human.board, 1, 1)
-    const coords = computer.randomAttack(human.board);
+    computer.randomAttack(human.board);
 
     expect(computer.checkValidCoords(human.board, [1, 1])).toBe(false)
-    expect(human.board.array[coords[0]][coords[1]].isMissed).toBe(true)
+    expect(human.board.array).toEqual(
+      expect.arrayContaining([
+        expect.arrayContaining([
+          expect.objectContaining({isMissed: true})
+        ])
+      ])
+    )
   })
 
 })

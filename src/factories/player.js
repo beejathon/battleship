@@ -9,7 +9,8 @@ const createPlayer = (type, name) => {
   player.moves = []
 
   player.attack = function(board, y, x) {
-    board.receiveAttack(y, x);
+    const result = board.receiveAttack(y, x);
+    return result;
   }
 
   player.randomAttack = function(board) {
@@ -20,8 +21,10 @@ const createPlayer = (type, name) => {
       coords = randomCoords();
     }
 
-    this.attack(board, coords[0], coords[1]);
-    return coords;
+    //attack enemy board and store result
+    const result = this.attack(board, coords[0], coords[1]);
+
+    return result;
   }
 
   player.checkValidCoords = function(board, coords) {

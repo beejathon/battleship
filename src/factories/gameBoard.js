@@ -58,9 +58,12 @@ const createBoard = () => {
       this.fleet[index].isSunk();
       //record hit on board array
       this.array[y][x].isHit = true;
+      this.log.push(`hit ${x},${y}`)
+      return true;
     } else {
       this.array[y][x].isMissed = true;
       this.log.push(`miss ${x},${y}`)
+      return false;
     }
   };
 

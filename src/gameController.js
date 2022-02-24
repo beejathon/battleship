@@ -1,16 +1,7 @@
 const createPlayer = require("./factories/player.js");
-const randomCoords = require("./helpers/helpers.js");
-const randomDirection = require("./helpers/helpers.js");
 
-const GAME_PIECES = [
-  { length: 5, type: 'carrier' },
-  { length: 4, type: 'battleship' },
-  { length: 3, type: 'submarine' },
-  { length: 3, type: 'destroyer' },
-  { length: 2, type: 'patrol boat' }
-]
-
-let players = [];
+let computer;
+let user;
 
 const getRandomName = () => {
   const names = [
@@ -32,53 +23,53 @@ const getRandomName = () => {
 };
 
 const newGame = (input) => {
-  //clear players array
-  players.splice(0, players.length)
+  //create players and populate boards
+  computer = createPlayer('computer', getRandomName())
+  user = createPlayer('user', input)
 
-  //create players and boards
-  let computer = createPlayer('computer', getRandomName())
-  let user = createPlayer('user', input)
+  computer.board.populateBoard()
+  user.board.populateBoard()
 
-  //radomly populate boards
-  placeShipsRandomly(computer);
-  placeShipsRandomly(user);
+  console.log(computer, user)
+};
 
-  //push player objects to players array
-  players.push(user, computer)
-}
+const playTurn = () => {
+  //check active player
+  if (user.isActive) {
+    //prompt user move
+    let coords = getCoords();
 
-const placeShipsRandomly = function(player) {
-  let coords = randomCoords();
-  let direction = randomDirection();
-
-  for (const ship in GAME_PIECES) {
-    //check if placement obeys board rules
-    let placementIsValid = player.board.isPlacementValid(
-      coords[0], 
-      coords[1], 
-      ship.length
-      );
-    let spaceIsClear = player.board.isSpaceClear(
-      coords[0], 
-      coords[1], 
-      direction, 
-      ship.length
-      );
-  
-    //generate new random placement if coordinates are invalid
-    while (!placementIsValid && !spaceIsClear) {
-      coords = randomCoords();
-      direction = randomDirection();
+    //keep prompting user for moves until miss 
+    while (user.attack(computer.board, coords[0], coords[1])) {
+      coords = getCoords();
     }
 
-    //place ship onto player board
-    player.board.placeShip(
-      coords[0], 
-      coords[1], 
-      randomDirection(), 
-      ship.length, 
-      ship.type);
+    //switch active user
+    user.isActive = false;
+    computer.isActive = true;
   }
+
+  if (computer.isActive) {
+    //generate random attack and store result
+    let result = computer.randomAttack(user.board)
+
+    //continue random attacks until miss
+    while (result) {
+      result = computer.randomAttack(user.board)
+    }
+
+    //switch active user
+    user.isActive = true;
+    computer.isActive = false;
+  }  
+
 }
 
-newGame();
+const getCoords = () => {
+  let x = window.prompt('x?');
+  let y = window.prompt('y?')
+
+  return [y, x];
+}
+
+module.exports = newGame, playTurn;
