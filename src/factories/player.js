@@ -5,19 +5,22 @@ const createPlayer = (type, name) => {
   const player = {}
   player.type = type;
   player.name = name;
+  player.isActive = false;
   player.board = createBoard();
-  player.moves = []
+  player.moves = [];
 
   player.attack = function(board, y, x) {
     const result = board.receiveAttack(y, x);
+    if (result) this.moves.push([y, x])
+
     return result;
   }
 
   player.randomAttack = function(board) {
     let coords = randomCoords();
 
-    //check for valid coordinates
-    while (!this.checkValidCoords(board, coords)) {
+    //check for repeat moves
+    while (this.isRepeatMove(coords)) {
       coords = randomCoords();
     }
 
@@ -27,10 +30,9 @@ const createPlayer = (type, name) => {
     return result;
   }
 
-  player.checkValidCoords = function(board, coords) {
-    if (board.array[coords[0]][coords[1]].isHit === true) return false;
-    if (board.array[coords[0]][coords[1]].isMissed === true) return false;
-    return true;
+  player.isRepeatMove = function(coords) {
+    const repeat = this.moves.includes(coords);
+    if (repeat) return true;
   }
 
   return player;

@@ -61,10 +61,10 @@ describe("Player factory:", () => {
   test("computer player generates random legal attacks", () => {
     const human = createPlayer('user', 'Philippe');
     const computer = createPlayer('computer', 'Lie Bot');
-    computer.attack(human.board, 1, 1)
+    computer.attack(human.board, 1, 1);
     computer.randomAttack(human.board);
 
-    expect(computer.checkValidCoords(human.board, [1, 1])).toBe(false)
+    expect(computer.attack(human.board, 1, 1)).toBe(false)
     expect(human.board.array).toEqual(
       expect.arrayContaining([
         expect.arrayContaining([
