@@ -20,4 +20,4 @@ const createShip = (length, type) => {
   return ship;
 };
 
-module.exports = createShip;
+export default createShip;

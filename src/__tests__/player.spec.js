@@ -1,4 +1,4 @@
-const createPlayer = require('../factories/player.js');
+import createPlayer from '../factories/player.js';
 
 describe("Player factory:", () => {
   const player1 = createPlayer('user');

@@ -1,5 +1,5 @@
-const createShip = require('./ship.js')
-const randomCoords = require('../helpers/helpers.js');
+import createShip from './ship.js';
+import randomCoords from '../helpers/helpers.js';
 
 const createBoard = () => {
   const board = {}
@@ -9,9 +9,9 @@ const createBoard = () => {
 
   //create 10x10 2D array
   board.array = [];
-  for (i = 0; i <= 9; i++) {
+  for (let i = 0; i <= 9; i++) {
     board.array.push(new Array)
-    for (j = 0; j <= 9; j++) {
+    for (let j = 0; j <= 9; j++) {
       board.array[i].push({
         hasShip: false,
         isHit: false,
@@ -31,14 +31,14 @@ const createBoard = () => {
     
     //mark board spaces
     if (direction === 'horizontal') {
-      for (i = x; i < x + ship.length; i++) {
+      for (let i = x; i < x + ship.length; i++) {
         this.array[y][i].hasShip = true;
         this.array[y][i].shipType = ship.type;
       }
     }
 
     if (direction === 'vertical') {
-      for (i = y; i < y + ship.length; i++) {
+      for (let i = y; i < y + ship.length; i++) {
         this.array[i][x].hasShip = true;
         this.array[i][x].shipType = ship.type;
       }
@@ -86,12 +86,12 @@ const createBoard = () => {
 
   board.isSpaceClear = function(y, x, direction, length) {
     if (direction === 'horizontal') {
-      for (i = x; i < x + length; i++) {
+      for (let i = x; i < x + length; i++) {
         if (this.array[y][i].hasShip === true) return false;
       }
     }
     if (direction === 'vertical') {
-      for (i = y; i < y + length; i++) {
+      for (let i = y; i < y + length; i++) {
         if (this.array[i][x].hasShip === true) return false;
       }
     }
@@ -123,4 +123,4 @@ const createBoard = () => {
 
 };
 
-module.exports = createBoard;
+export default createBoard;

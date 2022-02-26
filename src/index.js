@@ -1,4 +1,6 @@
-const createPlayer = require("./factories/player.js");
+import './styles.css';
+import createPlayer from './factories/player.js';
+import renderBoard from './display.js'
 
 let computer;
 let user;
@@ -23,6 +25,8 @@ const getRandomName = () => {
 };
 
 const newGame = (input) => {
+  const players = [];
+
   //create players and populate boards
   computer = createPlayer('computer', getRandomName())
   user = createPlayer('user', input)
@@ -33,7 +37,10 @@ const newGame = (input) => {
   //set user to active
   user.isActive = true;
 
-  console.log(computer, user)
+  //render DOM board
+  players.push(user, computer)
+  renderBoard(players);
+  console.log(user, computer)
 };
 
 const playTurn = () => {
@@ -69,13 +76,12 @@ const playTurn = () => {
 }
 
 const getCoords = () => {
-  let x = prompt('x?', 'Enter a value from 0-9');
-  let y = prompt('y?', 'Enter a value from 0-9');
+  let y = prompt('Enter a value from 0-9', 'y');
+  let x = prompt('Enter a value from 0-9', 'x');
 
   return [y, x];
 }
 
-module.exports = newGame, playTurn;
-
 newGame('bunghole');
-playTurn();
+
+export default { newGame, playTurn }

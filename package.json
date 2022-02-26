@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "jest",
-    "watch": "jest --watch *.js",
+    "watch": "webpack --watch",
     "build": "webpack"
   },
   "dependencies": {

@@ -1,5 +1,5 @@
-const randomCoords = require('../helpers/helpers.js');
-const createBoard = require('./gameBoard.js');
+import createBoard from './gameBoard.js';
+import randomCoords from '../helpers/helpers.js';
 
 const createPlayer = (type, name) => {
   const player = {}
@@ -38,4 +38,4 @@ const createPlayer = (type, name) => {
   return player;
 };
 
-module.exports = createPlayer;
+export default createPlayer;
