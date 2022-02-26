@@ -4,9 +4,6 @@ import randomCoords from '../helpers/helpers.js';
 const createBoard = () => {
   const board = {}
 
-  board.fleet = [];
-  board.log = [];
-
   //create 10x10 2D array
   board.array = [];
   for (let i = 0; i <= 9; i++) {
@@ -20,6 +17,8 @@ const createBoard = () => {
       })
     }
   };
+
+  board.fleet = [];
 
   board.placeShip = function(y, x, direction, ship) {
     //check if placement obeys board rules
@@ -48,22 +47,24 @@ const createBoard = () => {
   };
 
   board.receiveAttack = function(y, x) {
-     //check if space has ship or not
+
+
+    //check if space has ship
     if (this.array[y][x].hasShip == true) {
       //record hit on ship object
       let type = this.array[y][x].shipType;
       let index = this.findShip(type);
       this.fleet[index].hit();
-      //check ship status
       this.fleet[index].isSunk();
+
       //record hit on board array
       this.array[y][x].isHit = true;
-      this.log.push(`hit ${x},${y}`)
-      return true;
+
+      return [y, x];
     } else {
       this.array[y][x].isMissed = true;
-      this.log.push(`miss ${x},${y}`)
-      return false;
+
+      return [y, x];
     }
   };
 
@@ -116,11 +117,9 @@ const createBoard = () => {
         direction = Math.floor(Math.random() * 2) === 1 ? 'vertical' : 'horizontal';
       }
     })
-
   };
 
   return board;
-
 };
 
 export default createBoard;

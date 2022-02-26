@@ -10,6 +10,10 @@ const createPlayer = (type, name) => {
   player.moves = [];
 
   player.attack = function(board, y, x) {
+    //check for reapeat moves
+    if (this.isRepeatMove([y, x])) return false;
+
+    //send attack to opponent board
     const result = board.receiveAttack(y, x);
     if (result) this.moves.push([y, x])
 
@@ -24,15 +28,23 @@ const createPlayer = (type, name) => {
       coords = randomCoords();
     }
 
-    //attack enemy board and store result
+    //attack enemy board
     const result = this.attack(board, coords[0], coords[1]);
+    if (result) this.moves.push([coords[0], coords[1]])
 
     return result;
   }
 
   player.isRepeatMove = function(coords) {
-    const repeat = this.moves.includes(coords);
-    if (repeat) return true;
+    for (let i = 0; i < this.moves.length; i++) {
+      if (
+        this.moves[i][0] === coords[0] &&
+        this.moves[i][1] === coords[1]
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   return player;

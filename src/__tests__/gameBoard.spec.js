@@ -33,12 +33,12 @@ describe("Gameboard factory:", () => {
   })
 
   test("receives attack and records miss", () => {
-    board.receiveAttack(0, 0)
+    const result = board.receiveAttack(0, 0)
 
     expect(board.array[0][0].isMissed).toBe(true)
     expect(board.array[0][1].isHit).toBe(false)
     expect(board.array[1][1].isHit).toBe(false)
-    expect(board.log).toContain('miss 0,0')
+    expect(result).toEqual([0, 0])
   })
 
 
