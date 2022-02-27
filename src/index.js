@@ -1,9 +1,8 @@
 import './styles.css';
 import createPlayer from './factories/player.js';
-import renderBoard from './display.js'
+import { renderBoard } from './display.js';
+import { addListeners } from './display.js';
 
-let user;
-let computer;
 const players = []
 
 const getRandomName = () => {
@@ -40,19 +39,11 @@ const newGame = (input) => {
   //render DOM board
   players.push(user, computer)
   renderBoard(players);
+  addListeners();
 };
 
-function userTurn (e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  //get coordinates
-  let target = e.target;
-  let x = target.id; 
-  let y = target.parentElement.id;
-
-  //attack opponent
-  let result = players[0].attack(players[1].board, y, x)
+function userTurn(coords) {
+  let result = players[0].attack(players[1].board, coords[0], coords[1])
 
   if (result) {
     players[0].isActive = true;
@@ -83,31 +74,23 @@ const computerTurn = () => {
 const nextTurn = () => {
   //check for win
   const gameOver = checkWin();
-  if (gameOver) newGame('CORNHOLIO');
+  if (gameOver) newGame('CORNHOLIO')
 
   //check active user
-  if (players[0].isActive) userTurn() 
+  if (players[0].isActive) return;
   if (players[1].isActive) computerTurn();
 }
 
 const checkWin = () => {
   players.forEach((player) => {
     if (player.board.isFleetSunk()) {
-      alert(`${player.name} wins`);
+      alert(`${player.name} HAS LOST THE BATTLE OF SHIPS`)
       return true;
     }
   })
-
   return false;
 }
 
-const userInput = (e) => {
-
-
-  return [y, x];
-}
-
 newGame('bungholio');
-playTurn();
 
-export default { newGame, playTurn }
+export default userTurn;

@@ -49,3 +49,7 @@ header {
   margin: 2px;
   background-color: red;
 }
+
+.clickable {
+  cursor: crosshair;
+}
