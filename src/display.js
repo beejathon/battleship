@@ -1,11 +1,8 @@
 import userTurn from "./index.js";
 
-const renderBoard = (players) => {
-  //render boards
+const renderUserBoard = (user) => {
   const userBoard = document.querySelector('#userBoard');
-  const computerBoard = document.querySelector('#computerBoard');
-
-  players[0].board.array.forEach((element, i) => {
+  user.board.array.forEach((element, i) => {
     let row = document.createElement('div')
     row.classList.add('row')
     row.setAttribute('id', `${i}`)
@@ -24,7 +21,13 @@ const renderBoard = (players) => {
     userBoard.appendChild(row)
   })
 
-  players[1].board.array.forEach((element, i) => {
+  const userName = document.querySelector('#userName')
+  userName.textContent = user.name;
+}
+
+const renderComputerBoard = (computer) => {
+  const computerBoard = document.querySelector('#computerBoard');
+  computer.board.array.forEach((element, i) => {
     let row = document.createElement('div')
     row.classList.add('row')
     row.setAttribute('id', `${i}`)
@@ -43,11 +46,8 @@ const renderBoard = (players) => {
     computerBoard.appendChild(row)
   })
 
-  // render player names
-  const userName = document.querySelector('#userName')
-  userName.textContent = players[0].name;
   const computerName = document.querySelector('#computerName')
-  computerName.textContent = players[1].name;
+  computerName.textContent = computer.name;
 }
 
 const addListeners = () => {
@@ -59,8 +59,6 @@ const cellClick = (e) => {
   e.preventDefault();
   e.stopPropagation();
 
-  console.log(e.target)
-
   //get coordinates
   let target = e.target;
   let x = target.id; 
@@ -71,4 +69,4 @@ const cellClick = (e) => {
   userTurn([y, x]);
 }
 
-export { renderBoard, addListeners };
+export { renderUserBoard, renderComputerBoard, addListeners };

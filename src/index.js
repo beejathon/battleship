@@ -1,9 +1,11 @@
 import './styles.css';
 import createPlayer from './factories/player.js';
-import { renderBoard } from './display.js';
+import { renderUserBoard } from './display.js';
+import { renderComputerBoard } from './display.js';
 import { addListeners } from './display.js';
 
-const players = []
+let user;
+let computer;
 
 const getRandomName = () => {
   const names = [
@@ -25,11 +27,9 @@ const getRandomName = () => {
 };
 
 const newGame = (input) => {
-  players.splice(0, players.length)
-
   //create players and populate boards
-  let user = createPlayer('user', input)
-  let computer = createPlayer('computer', getRandomName())
+  user = createPlayer('user', input)
+  computer = createPlayer('computer', getRandomName())
   computer.board.populateBoard()
   user.board.populateBoard()
 
@@ -37,60 +37,60 @@ const newGame = (input) => {
   user.isActive = true;
 
   //render DOM board
-  players.push(user, computer)
-  renderBoard(players);
+  renderUserBoard(user);
+  renderComputerBoard(computer);
   addListeners();
 };
 
 function userTurn(coords) {
-  let result = players[0].attack(players[1].board, coords[0], coords[1])
+  let result = user.attack(computer.board, coords[0], coords[1])
 
   if (result) {
-    players[0].isActive = true;
-    players[1].isActive = false;
+    user.isActive = true;
+    computer.isActive = false;
   } else {
-    players[0].isActive = true;
-    players[1].isActive = false;
+    user.isActive = true;
+    computer.isActive = false;
   }
-
   nextTurn();
 }
 
 const computerTurn = () => {
   //generate random attack and store result
-  let result = players[1].randomAttack(players[0].board)
+  let result = computer.randomAttack(user.board)
 
   //continue random attacks until miss
   while (result) {
-    result = players[1].randomAttack(players[0].board)
+    result = computer.randomAttack(user.board)
   }
 
-  players[0].isActive = true;
-  players[1].isActive = false;
-
+  user.isActive = true;
+  computer.isActive = false;
   nextTurn();
 }
 
 const nextTurn = () => {
   //check for win
   const gameOver = checkWin();
-  if (gameOver) newGame('CORNHOLIO')
+  if (gameOver) game = newGame('CORNHOLIO')
 
   //check active user
-  if (players[0].isActive) return;
-  if (players[1].isActive) computerTurn();
+  if (user.isActive) return;
+  if (computer.isActive) computerTurn();
 }
 
 const checkWin = () => {
-  players.forEach((player) => {
-    if (player.board.isFleetSunk()) {
-      alert(`${player.name} HAS LOST THE BATTLE OF SHIPS`)
-      return true;
-    }
-  })
+  if (user.board.isFleetSunk()) {
+    alert(`${user.name} HAS LOST THE BATTLE OF SHIPS`)
+    return true;
+  }
+  if (computer.board.isFleetSunk()) {
+    alert(`${computer.name} HAS LOST THE BATTLE OF SHIPS`)
+    return true;
+  }
   return false;
 }
 
-newGame('bungholio');
+let game = newGame('bungholio');
 
 export default userTurn;
