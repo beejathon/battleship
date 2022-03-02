@@ -11,10 +11,12 @@ const createShip = (length, type) => {
 
   ship.hit = function() {
     this.hits.pop();
+    this.status = this.hits.length === 0 ? 'sunk' : 'afloat';
   }
 
   ship.isSunk = function() {
-    this.status = this.hits.length === 0 ? 'sunk' : 'afloat';
+    if (this.status === 'sunk') return true;
+    if (this.status === 'afloat') return false;
   }
 
   return ship;

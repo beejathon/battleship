@@ -38,7 +38,7 @@ describe("Gameboard factory:", () => {
     expect(board.array[0][0].isMissed).toBe(true)
     expect(board.array[0][1].isHit).toBe(false)
     expect(board.array[1][1].isHit).toBe(false)
-    expect(result).toEqual([0, 0])
+    expect(result).toEqual("MISS at 0,0")
   })
 
 

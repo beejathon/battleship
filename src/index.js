@@ -3,9 +3,11 @@ import createPlayer from './factories/player.js';
 import { renderUserBoard } from './display.js';
 import { renderComputerBoard } from './display.js';
 import { addListeners } from './display.js';
+import { updateLog } from './display.js'
 
 let user;
 let computer;
+let battleLog = [];
 
 const getRandomName = () => {
   const names = [
@@ -22,7 +24,6 @@ const getRandomName = () => {
   ];
 
   let index = Math.floor(Math.random() * 10);
-
   return names[index]
 };
 
@@ -30,8 +31,8 @@ const newGame = (input) => {
   //create players and populate boards
   user = createPlayer('user', input)
   computer = createPlayer('computer', getRandomName())
-  computer.board.populateBoard()
   user.board.populateBoard()
+  computer.board.populateBoard()
 
   //set user to active
   user.isActive = true;
@@ -42,30 +43,23 @@ const newGame = (input) => {
   addListeners();
 };
 
-function userTurn(coords) {
+const userTurn = (coords) => {
   let result = user.attack(computer.board, coords[0], coords[1])
-
-  if (result) {
-    user.isActive = true;
-    computer.isActive = false;
-  } else {
-    user.isActive = true;
-    computer.isActive = false;
-  }
+  battleLog.push(`${user.name}: ${result}!`)
+  user.isActive = false;
+  computer.isActive = true;
+  updateLog();
   nextTurn();
 }
 
 const computerTurn = () => {
   //generate random attack and store result
   let result = computer.randomAttack(user.board)
-
-  //continue random attacks until miss
-  while (result) {
-    result = computer.randomAttack(user.board)
-  }
-
+  result = computer.randomAttack(user.board)
+  battleLog.push(`${computer.name}: ${result}!`)
   user.isActive = true;
   computer.isActive = false;
+  updateLog();
   nextTurn();
 }
 
@@ -93,4 +87,4 @@ const checkWin = () => {
 
 let game = newGame('bungholio');
 
-export default userTurn;
+export { userTurn, newGame, battleLog };

@@ -13,9 +13,9 @@ const createPlayer = (type, name) => {
     //check for reapeat moves
     if (this.isRepeatMove([y, x])) return false;
 
-    //send attack to opponent board
+    //attack enemy board
     const result = board.receiveAttack(y, x);
-    if (result) this.moves.push([y, x])
+    this.moves.push([y, x]);
 
     return result;
   }
@@ -30,7 +30,7 @@ const createPlayer = (type, name) => {
 
     //attack enemy board
     const result = this.attack(board, coords[0], coords[1]);
-    if (result) this.moves.push([coords[0], coords[1]])
+    this.moves.push([coords[0], coords[1]]);
 
     return result;
   }

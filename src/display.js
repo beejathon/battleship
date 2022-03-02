@@ -1,4 +1,4 @@
-import userTurn from "./index.js";
+import { battleLog, userTurn } from "./index.js";
 
 const renderUserBoard = (user) => {
   const userBoard = document.querySelector('#userBoard');
@@ -53,6 +53,8 @@ const renderComputerBoard = (computer) => {
 const addListeners = () => {
   const computerBoard = document.querySelector('#computerBoard')
   computerBoard.addEventListener('click', cellClick, false)
+
+  const newBtn = document.querySelector('#newgame')
 }
 
 const cellClick = (e) => {
@@ -64,9 +66,18 @@ const cellClick = (e) => {
   let x = target.id; 
   let y = target.parentElement.id;
 
-  console.log(y, x)
-
   userTurn([y, x]);
 }
 
-export { renderUserBoard, renderComputerBoard, addListeners };
+const updateLog = () => {
+  const log = document.querySelector('#battleLog ul');
+  log.innerHTML = '';
+  let df = document.createDocumentFragment();
+  battleLog.forEach((log) => {
+    let li = document.createElement('li')
+    li.innerText = log
+    df.appendChild(li)
+  })
+}
+
+export { renderUserBoard, renderComputerBoard, addListeners, updateLog };

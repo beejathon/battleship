@@ -47,24 +47,22 @@ const createBoard = () => {
   };
 
   board.receiveAttack = function(y, x) {
-
-
     //check if space has ship
     if (this.array[y][x].hasShip == true) {
       //record hit on ship object
       let type = this.array[y][x].shipType;
       let index = this.findShip(type);
       this.fleet[index].hit();
-      this.fleet[index].isSunk();
+      let sunk = this.fleet[index].isSunk();
 
       //record hit on board array
       this.array[y][x].isHit = true;
 
-      return [y, x];
+      if (sunk) return `sunk ${this.fleet[index].type} at ${[y, x]}`
+      return `hit at ${[y, x]}`;
     } else {
       this.array[y][x].isMissed = true;
-
-      return [y, x];
+      return `miss at ${[y, x]}`;
     }
   };
 
