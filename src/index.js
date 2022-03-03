@@ -45,11 +45,16 @@ const newGame = (input) => {
 
 const userTurn = (coords) => {
   let result = user.attack(computer.board, coords[0], coords[1])
-  battleLog.push(`${user.name}: ${result}!`)
-  user.isActive = false;
-  computer.isActive = true;
-  updateLog();
-  nextTurn();
+  if (!result) {
+    user.isActive = true;
+    computer.isActive = false;
+    nextTurn();
+  } else {
+    user.isActive = false;
+    computer.isActive = true;
+    battleLog.push(`${user.name}: ${result}!`)
+    nextTurn();
+  }
 }
 
 const computerTurn = () => {
@@ -59,14 +64,14 @@ const computerTurn = () => {
   battleLog.push(`${computer.name}: ${result}!`)
   user.isActive = true;
   computer.isActive = false;
-  updateLog();
   nextTurn();
 }
 
 const nextTurn = () => {
-  //check for win
+  //check for win and update battle log
   const gameOver = checkWin();
   if (gameOver) game = newGame('CORNHOLIO')
+  updateLog(battleLog);
 
   //check active user
   if (user.isActive) return;
@@ -75,11 +80,11 @@ const nextTurn = () => {
 
 const checkWin = () => {
   if (user.board.isFleetSunk()) {
-    alert(`${user.name} HAS LOST THE BATTLE OF SHIPS`)
+    battleLog.push(`${user.name} HAS LOST THE BATTLE OF SHIPS`)
     return true;
   }
   if (computer.board.isFleetSunk()) {
-    alert(`${computer.name} HAS LOST THE BATTLE OF SHIPS`)
+    battleLog.push(`${computer.name} HAS LOST THE BATTLE OF SHIPS`)
     return true;
   }
   return false;
@@ -87,4 +92,4 @@ const checkWin = () => {
 
 let game = newGame('bungholio');
 
-export { userTurn, newGame, battleLog };
+export { userTurn, newGame };

@@ -1,7 +1,8 @@
-import { battleLog, userTurn } from "./index.js";
+import { userTurn } from "./index.js";
 
 const renderUserBoard = (user) => {
   const userBoard = document.querySelector('#userBoard');
+  userBoard.innerHTML = '';
   user.board.array.forEach((element, i) => {
     let row = document.createElement('div')
     row.classList.add('row')
@@ -27,6 +28,7 @@ const renderUserBoard = (user) => {
 
 const renderComputerBoard = (computer) => {
   const computerBoard = document.querySelector('#computerBoard');
+  computerBoard.innerHTML = '';
   computer.board.array.forEach((element, i) => {
     let row = document.createElement('div')
     row.classList.add('row')
@@ -69,15 +71,16 @@ const cellClick = (e) => {
   userTurn([y, x]);
 }
 
-const updateLog = () => {
-  const log = document.querySelector('#battleLog ul');
-  log.innerHTML = '';
+const updateLog = (battleLog) => {
+  let ul = document.querySelector('.battle-log ul');
+  ul.innerHTML = '';
   let df = document.createDocumentFragment();
-  battleLog.forEach((log) => {
-    let li = document.createElement('li')
-    li.innerText = log
-    df.appendChild(li)
+  battleLog.forEach((entry) => {
+    let li = document.createElement('li');
+    li.innerText = entry;
+    df.appendChild(li);
   })
+  ul.appendChild(df);
 }
 
 export { renderUserBoard, renderComputerBoard, addListeners, updateLog };
