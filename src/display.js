@@ -9,12 +9,16 @@ const renderUserBoard = (user) => {
     row.setAttribute('id', `${i}`)
     element.forEach((element, j) => {
       let cell = document.createElement('div')
-      if (element.hasShip) {
+      if (!element.isHit && !element.isMissed) {
         cell.classList.add('cell')
-        cell.classList.add('ship')
       }
-      if (!element.hasShip) {
-        cell.classList.add('cell')
+      if (element.isHit) {
+        cell.classList.add('hit')
+        cell.innerHTML = '&#9673'
+      }
+      if (element.isMissed) {
+        cell.classList.add('missed')
+        cell.innerHTML = '&#9673'
       }
       cell.setAttribute('id', `${j}`)
       row.appendChild(cell)
@@ -35,11 +39,16 @@ const renderComputerBoard = (computer) => {
     row.setAttribute('id', `${i}`)
     element.forEach((element, j) => {
       let cell = document.createElement('div')
-      if (element.hasShip) {
-        cell.classList.add('ship')
-      }
-      if (!element.hasShip) {
+      if (!element.isHit && !element.isMissed) {
         cell.classList.add('cell')
+      }
+      if (element.isHit) {
+        cell.classList.add('hit')
+        cell.innerHTML = '&#9673'
+      }
+      if (element.isMissed) {
+        cell.classList.add('missed')
+        cell.innerHTML = '&#9673'
       }
       cell.classList.add('clickable')
       cell.setAttribute('id', `${j}`)

@@ -37,20 +37,40 @@ header {
 
 .cell {
   display: inline;
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   margin: 2px;
   background-color: blue;
 }
 
-.ship {
+.hit {
   display: inline;
-  height: 40px;
-  width: 40px;
+  display: flex;
+  height: 30px;
+  width: 30px;
   margin: 2px;
   background-color: red;
+  align-items: center;
+  justify-content: center;
+}
+
+.missed {
+  display: inline;
+  display: flex;
+  height: 30px;
+  width: 30px;
+  margin: 2px;
+  background-color: greenyellow;
+  align-items: center;
+  justify-content: center;
 }
 
 .clickable {
   cursor: crosshair;
+}
+
+.battle-log {
+  margin: auto;
+  width: 500px;
+  height: 500px;
 }
