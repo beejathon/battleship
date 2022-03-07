@@ -1,4 +1,4 @@
-import { userTurn } from "./index.js";
+import { userTurn, newGame, toggleDirection, getPlacement } from "./index.js";
 
 const renderUserBoard = (user) => {
   const userBoard = document.querySelector('#userBoard');
@@ -11,6 +11,9 @@ const renderUserBoard = (user) => {
       let cell = document.createElement('div')
       if (!element.isHit && !element.isMissed) {
         cell.classList.add('cell')
+      }
+      if (element.hasShip) {
+        cell.classList.add('ship')
       }
       if (element.isHit) {
         cell.classList.add('hit')
@@ -59,13 +62,32 @@ const renderComputerBoard = (computer) => {
 
   const computerName = document.querySelector('#computerName')
   computerName.textContent = computer.name;
+
+  computerBoard.addEventListener('click', cellClick, false)
 }
 
-const addListeners = () => {
+const resetBoards = () => {
+  const userBoard = document.querySelector('#userBoard')
+  const userName = document. querySelector('#userName')
   const computerBoard = document.querySelector('#computerBoard')
-  computerBoard.addEventListener('click', cellClick, false)
+  const computerName = document.querySelector('#computerName')
 
-  const newBtn = document.querySelector('#newgame')
+  userBoard.innerHTML = ''
+  userName.textContent = ''
+  computerBoard.innerHTML = ''
+  computerName.textContent = ''
+}
+
+const openModal = () => {
+  const newBtn = document.querySelector('#newGame')
+  newBtn.addEventListener('click', newGame)
+
+  const direction = document.querySelector('#direction')
+  direction.addEventListener('click', toggleDirection)
+}
+
+const closeModal = () => {
+  
 }
 
 const cellClick = (e) => {
@@ -92,4 +114,9 @@ const updateLog = (battleLog) => {
   ul.appendChild(df);
 }
 
-export { renderUserBoard, renderComputerBoard, addListeners, updateLog };
+export { 
+  renderUserBoard, 
+  renderComputerBoard,
+  resetBoards, 
+  updateLog 
+};

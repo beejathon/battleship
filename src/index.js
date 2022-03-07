@@ -2,28 +2,40 @@ import './styles.css';
 import createPlayer from './factories/player.js';
 import { renderUserBoard } from './display.js';
 import { renderComputerBoard } from './display.js';
-import { addListeners } from './display.js';
 import { updateLog } from './display.js'
+import { resetBoards } from './display.js'
 
 let user;
 let computer;
+let direction = 'vertical';
 let battleLog = [];
 
+
 const newGame = (input) => {
-  //create players and populate boards
+  //create user player and prompt ship placement
   user = createPlayer('user', input)
-  computer = createPlayer('computer', getRandomName())
   user.board.populateBoard()
+  
+  //create computer player and populate board
+  computer = createPlayer('computer', getRandomName())
   computer.board.populateBoard()
 
   //set user to active
   user.isActive = true;
 
+  //reset battle log
+  battleLog.splice(0, battleLog.length);
+
   //render DOM board
   renderUserBoard(user);
   renderComputerBoard(computer);
-  addListeners();
 };
+
+const resetGame = () => {
+  user = undefined;
+  computer = undefined;
+  resetBoards();
+}
 
 const userTurn = (coords) => {
   let result = user.attack(computer.board, coords[0], coords[1])
@@ -49,14 +61,16 @@ const computerTurn = () => {
 }
 
 const nextTurn = () => {
-  //check for win and update battle log
-  const gameOver = checkWin();
-  if (gameOver) game = newGame('CORNHOLIO')
-  
-  //re-render DOM
-  updateLog(battleLog);
+  //render DOM and check for win
   renderUserBoard(user);
   renderComputerBoard(computer);
+  const gameOver = checkWin();
+  updateLog(battleLog);
+  if (gameOver) {
+    let result = confirm('New Game?')
+    if (result) newGame();
+    else resetGame();
+  }
 
   //check active user
   if (user.isActive) return;
@@ -65,7 +79,7 @@ const nextTurn = () => {
 
 const checkWin = () => {
   if (user.board.isFleetSunk()) {
-    battleLog.push(`${user.name} HAS LOST THE BATTLE OF SHIPS`)
+    battleLog.unshift(`${user.name} HAS LOST THE BATTLE OF SHIPS`)
     return true;
   }
   if (computer.board.isFleetSunk()) {
@@ -93,6 +107,22 @@ const getRandomName = () => {
   return names[index]
 };
 
+const getPlacement = (coords, direction, index) => {
+  const ships = [
+    { length: 5, type: 'carrier' },
+    { length: 4, type: 'battleship' },
+    { length: 3, type: 'submarine' },
+    { length: 3, type: 'destroyer' },
+    { length: 2, type: 'patrol boat' },
+  ]
+
+  user.board.placeShip(coords[0], coords[1], direction, ships[index])
+}
+
+const toggleDirection = () => {
+  direction = (direction === 'vertical') ? 'horizontal' : 'vertical'
+}
+
 let game = newGame('bungholio');
 
-export { userTurn, newGame };
+export { userTurn, newGame, toggleDirection, getPlacement };
