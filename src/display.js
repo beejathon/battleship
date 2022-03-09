@@ -1,4 +1,14 @@
-import { userTurn, newGame, toggleDirection, getPlacement } from "./index.js";
+import { userTurn } from "./index.js";
+import { newGame } from "./index.js";
+import { startGame } from "./index.js";
+import { toggleDirection } from "./index.js";
+import { placeShips } from "./index.js";
+import { shipsPlaced } from "./index.js";
+
+const init = () => {
+  const newBtn = document.querySelector('#newGame')
+  newBtn.addEventListener('click', newGame)
+}
 
 const renderUserBoard = (user) => {
   const userBoard = document.querySelector('#userBoard');
@@ -79,15 +89,61 @@ const resetBoards = () => {
 }
 
 const openModal = () => {
-  const newBtn = document.querySelector('#newGame')
-  newBtn.addEventListener('click', newGame)
-
-  const direction = document.querySelector('#direction')
-  direction.addEventListener('click', toggleDirection)
+  const modal = document.querySelector('.modal-container');
+  modal.classList.toggle('visible');
+  const direction = document.querySelector('#direction');
+  direction.addEventListener('click', toggleDirection);
+  const start = document.querySelector('#startGame');
+  start.addEventListener('submit', handleStart);
 }
 
 const closeModal = () => {
-  
+  const modal = document.querySelector('.modal');
+  modal.classList.toggle('visible'); 
+}
+
+const handleStart = (e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  const dataForm = new FormData(e.target)
+  const name = dataForm.get('name')
+  if (shipsPlaced === 4) {
+    startGame(name);
+  }
+  return;
+}
+
+const renderStartBoard = (user) => {
+  const startBoard = document.querySelector('#startBoard')
+  startBoard.innerHTML = '';
+  user.board.array.forEach((element, i) => {
+    let row = document.createElement('div')
+    row.classList.add('row')
+    row.setAttribute('id', `${i}`)
+    element.forEach((element, j) => {
+      let cell = document.createElement('div')
+      cell.classList.add('cell')
+      cell.classList.add('placable')
+      if (element.hasShip) {
+        cell.classList.add('ship')
+      }
+      cell.setAttribute('id', `${j}`)
+      row.appendChild(cell)
+    })
+    startBoard.appendChild(row)
+  })
+
+  startBoard.addEventListener('click', handlePlacement)
+}
+
+const handlePlacement = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  let target = e.target;
+  let x = target.id; 
+  let y = target.parentElement.id;
+  placeShips([y, x])
 }
 
 const cellClick = (e) => {
@@ -98,7 +154,6 @@ const cellClick = (e) => {
   let target = e.target;
   let x = target.id; 
   let y = target.parentElement.id;
-
   userTurn([y, x]);
 }
 
@@ -118,5 +173,9 @@ export {
   renderUserBoard, 
   renderComputerBoard,
   resetBoards, 
-  updateLog 
+  updateLog,
+  openModal,
+  closeModal,
+  renderStartBoard,
+  init 
 };

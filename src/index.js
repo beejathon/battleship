@@ -1,32 +1,39 @@
 import './styles.css';
 import createPlayer from './factories/player.js';
+import { init } from './display.js';
 import { renderUserBoard } from './display.js';
 import { renderComputerBoard } from './display.js';
 import { updateLog } from './display.js'
 import { resetBoards } from './display.js'
+import { openModal } from './display.js'
+import { closeModal } from './display.js'
+import { renderStartBoard } from './display.js'
 
 let user;
 let computer;
-let direction = 'vertical';
+let direction = 'horizontal';
 let battleLog = [];
+let shipsPlaced = 0;
 
-
-const newGame = (input) => {
+const newGame = () => {
+  resetGame();
   //create user player and prompt ship placement
-  user = createPlayer('user', input)
-  user.board.populateBoard()
-  
+  user = createPlayer('user')
+  renderStartBoard(user);
+  openModal();
+}
+
+const startGame = (input) => {
+  closeModal();
+  //change user name and set to active
+  user.name = input;
+  user.isActive = true;
+
   //create computer player and populate board
   computer = createPlayer('computer', getRandomName())
   computer.board.populateBoard()
-
-  //set user to active
-  user.isActive = true;
-
-  //reset battle log
-  battleLog.splice(0, battleLog.length);
-
-  //render DOM board
+  
+  //render DOM boards
   renderUserBoard(user);
   renderComputerBoard(computer);
 };
@@ -34,6 +41,9 @@ const newGame = (input) => {
 const resetGame = () => {
   user = undefined;
   computer = undefined;
+  battleLog.splice(0, battleLog.length);
+  direction = 'horizontal'
+  shipsPlaced = 0;
   resetBoards();
 }
 
@@ -107,7 +117,7 @@ const getRandomName = () => {
   return names[index]
 };
 
-const getPlacement = (coords, direction, index) => {
+const placeShips = (coords) => {
   const ships = [
     { length: 5, type: 'carrier' },
     { length: 4, type: 'battleship' },
@@ -116,13 +126,26 @@ const getPlacement = (coords, direction, index) => {
     { length: 2, type: 'patrol boat' },
   ]
 
-  user.board.placeShip(coords[0], coords[1], direction, ships[index])
+  let index = shipsPlaced;
+  let result = user.board.placeShip(coords[0], coords[1], direction, ships[index])
+
+  if (result) {
+    shipsPlaced++;
+    renderStartBoard(user);
+  }
 }
 
 const toggleDirection = () => {
   direction = (direction === 'vertical') ? 'horizontal' : 'vertical'
 }
 
-let game = newGame('bungholio');
+init();
 
-export { userTurn, newGame, toggleDirection, getPlacement };
+export { 
+  userTurn, 
+  newGame,
+  startGame, 
+  toggleDirection, 
+  placeShips,
+  shipsPlaced
+ };

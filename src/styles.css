@@ -34,9 +34,10 @@ header {
   font-weight: bolder;
 }
 
-.user-board .computer-board {
+.user-board, .computer-board, .start-board {
   display: block;
   background: white;
+  margin: 20px;
 }
 
 .row {
@@ -86,6 +87,18 @@ header {
   cursor: crosshair;
 }
 
+.placable {
+  cursor: pointer;
+}
+
+.placable:hover {
+  background-color: #fff;
+}
+
+.nonplacable {
+  cursor: no-drop;
+}
+
 .battle-log {
   display: flex;
   flex-direction: column;
@@ -95,6 +108,39 @@ header {
   margin: auto;
   width: 40vw;
   height: 200px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
   overflow: scroll;
+}
+
+.modal-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  width: 800px;
+  max-width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.modal-container.visible {
+  opacity: 1;
+  pointer-events: auto;
 }

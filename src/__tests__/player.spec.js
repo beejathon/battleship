@@ -30,13 +30,11 @@ describe("Player factory:", () => {
   })
 
   test("players cannot place ships outside of board", () => {
-    player1.board.placeShip(-1, 10, 'horizontal', {length: 2, type: 'patrol boat'});
-    player2.board.placeShip(10, -1, 'vertical', {length: 2, type: 'patrol boat'});
-    player1.board.placeShip(0, 7, 'horizontal', {length: 4, type: 'battleship'});
-    player2.board.placeShip(7, 0, 'vertical', {length: 4, type: 'battleship'});
+    const result1 = player1.board.placeShip(0, 7, 'horizontal', {length: 4, type: 'battleship'});
+    const result2 = player2.board.placeShip(7, 0, 'vertical', {length: 4, type: 'battleship'});
 
-    expect(player1.board.fleet.length).toBe(1)
-    expect(player2.board.fleet.length).toBe(1)
+    expect(result1).toBe(false)
+    expect(result2).toBe(false)
   })
 
   test("players cannot place overlapping ships", () => {
