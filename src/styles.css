@@ -22,16 +22,17 @@ header {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  padding: 20px;
+  flex: 1 1 auto;
 }
 
 .user-area, .computer-area, .user-name, .computer-name {
   display: flex;
   flex-direction: column;
   margin: auto;
-  padding: 10px;
   justify-content: center;
-  font-size: large;
-  font-weight: bolder;
+  align-items: center;
+  text-align: center;
 }
 
 .user-board, .computer-board, .start-board {
@@ -96,6 +97,10 @@ header {
 }
 
 .placable:hover {
+  background-color: #fff;
+}
+
+.placable.targetZone {
   background-color: #fff;
 }
 

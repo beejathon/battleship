@@ -5,8 +5,4 @@ const randomCoords = () => {
   return [y, x]
 }
 
-const convertStoI = (v) => {
-  return parseInt(v);
-}
-
 export default randomCoords;

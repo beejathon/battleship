@@ -21,9 +21,9 @@ const createBoard = () => {
   board.fleet = [];
 
   board.placeShip = function(a, b, direction, ship) {
-    let y = parseInt(a);
-    let x = parseInt(b);
-
+    const y = parseInt(a);
+    const x = parseInt(b);
+    
     //check if placement obeys board rules
     if (!this.isPlacementValid(y, x, direction, ship.length)) return false;
 
@@ -77,6 +77,9 @@ const createBoard = () => {
   };
 
   board.isPlacementValid = function(y, x, direction, length) {
+    const a = isNaN(y);
+    const b = isNaN(x);
+    if (a || b ) return false;
     if (y < 0 || y > 9 || x < 0 || x > 9) return false;
 
     if (direction === 'horizontal') {

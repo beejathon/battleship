@@ -25,6 +25,7 @@ const newGame = () => {
 
 const startGame = (input) => {
   closeModal();
+  updateLog(battleLog);
   //change user name and set to active
   user.name = input;
   user.isActive = true;
@@ -42,7 +43,7 @@ const resetGame = () => {
   user = undefined;
   computer = undefined;
   battleLog.splice(0, battleLog.length);
-  direction = 'horizontal'
+  direction = 'horizontal';
   shipsPlaced = 0;
   resetBoards();
 }
@@ -130,8 +131,6 @@ const placeShips = (coords) => {
   let orientation = direction;
   let result = user.board.placeShip(coords[0], coords[1], orientation, ships[index])
 
-  console.log(result)
-
   if (result) {
     shipsPlaced++;
     renderStartBoard(user);
@@ -139,7 +138,14 @@ const placeShips = (coords) => {
 }
 
 const toggleDirection = () => {
-  direction = (direction === 'horizontal') ? 'vertical' : 'horizontal'
+  const directionBtn = document.querySelector('#direction');
+  if (direction === 'horizontal') {
+    direction = 'vertical';
+    directionBtn.textContent = 'Vertical';
+  } else {
+    direction = 'horizontal';
+    directionBtn.textContent = 'Horizontal';
+  }
 }
 
 init();
@@ -150,5 +156,6 @@ export {
   startGame, 
   toggleDirection, 
   placeShips,
+  direction,
   shipsPlaced
  };

@@ -3,6 +3,7 @@ import { newGame } from "./index.js";
 import { startGame } from "./index.js";
 import { toggleDirection } from "./index.js";
 import { placeShips } from "./index.js";
+import { direction } from "./index.js";
 import { shipsPlaced } from "./index.js";
 
 const init = () => {
@@ -107,10 +108,9 @@ const handleStart = (e) => {
   e.preventDefault();
   const dataForm = new FormData(e.target)
   const name = dataForm.get('name')
-  if (shipsPlaced === 5) {
+  if (shipsPlaced === 5 && name != '') {
     startGame(name);
   }
-  console.log(shipsPlaced)
 }
 
 const renderStartBoard = (user) => {
@@ -128,17 +128,74 @@ const renderStartBoard = (user) => {
         cell.classList.add('ship')
       }
       cell.setAttribute('id', `${j}`)
+      cell.setAttribute('data-id', `${i}${j}`)
       row.appendChild(cell)
     })
     startBoard.appendChild(row)
   })
 
+  startBoard.addEventListener('mouseenter', hoverOn)
+  startBoard.addEventListener('mouseleave', hoverOff)
   startBoard.addEventListener('click', handlePlacement, false)
+}
+
+const hoverOn = (e) => {
+  e.preventDefault();
+
+  let target = e.target;
+  let x = target.id;
+  let y = target.parentElement.id;
+
+  if (direction === 'horizontal') {
+    if (shipsPlaced === 0) {
+      for (let i = x; i < x + 1; i++) {
+        let cell = document.querySelector(`[data-id="${y}-${i}"]`);
+        cell.classList.add('target-zone');
+      }
+    }
+  }
+  
+  if (direction === 'vertical') {
+    if (shipsPlaced === 0) {
+      for (let i = y; i < y + 1; i++) {
+        let cell = document.querySelector(`[data-id="${i}-${x}"]`);
+        cell.classList.add('target-zone');
+      }
+    }
+  }
+}
+
+const hoverOff = (e) => {
+  e.preventDefault();
+
+  let target = e.target;
+  let x = target.id;
+  let y = target.parentElement.id;
+
+  if (direction === 'horizontal') {
+    if (shipsPlaced === 0) {
+      for (let i = x; i < x + 1; i++) {
+        let cell = document.querySelector(`[data-id="${y}-${i}"]`);
+        cell.classList.remove('target-zone');
+      }
+    }
+  }
+  
+  if (direction === 'vertical') {
+    if (shipsPlaced === 0) {
+      for (let i = y; i < y + 1; i++) {
+        let cell = document.querySelector(`[data-id="${i}-${x}"]`);
+        cell.classList.remove('target-zone');
+      }
+    }
+  }
 }
 
 const handlePlacement = (e) => {
   e.preventDefault();
   e.stopPropagation();
+
+  if (shipsPlaced === 5) return;
 
   let target = e.target;
   let x = target.id; 
