@@ -22,14 +22,22 @@ describe("Gameboard factory:", () => {
     expect(board.array[0][4].hasShip).toBe(false)
   })
 
-  test("places ship onto board vertically", () => {
+  test("places ships onto board vertically", () => {
     board.placeShip(1, 0, 'vertical', {length: 3, type: 'submarine'})
+    board.placeShip(4, 4, 'vertical', {length: 3, type: 'destroyer'})
 
     expect(board.array[0][0].hasShip).toBe(false)
     expect(board.array[1][0].hasShip).toBe(true)
     expect(board.array[2][0].hasShip).toBe(true)
     expect(board.array[3][0].hasShip).toBe(true)
     expect(board.array[4][0].hasShip).toBe(false)
+
+    expect(board.array[3][4].hasShip).toBe(false)
+    expect(board.array[4][4].hasShip).toBe(true)
+    expect(board.array[5][4].hasShip).toBe(true)
+    expect(board.array[6][4].hasShip).toBe(true)
+    expect(board.array[7][4].hasShip).toBe(false)
+
   })
 
   test("receives attack and records miss", () => {
@@ -60,6 +68,10 @@ describe("Gameboard factory:", () => {
     board.receiveAttack(3, 0)
     board.receiveAttack(0, 2)
     board.receiveAttack(0, 3)
+    board.receiveAttack(4, 4)
+    board.receiveAttack(5, 4)
+    board.receiveAttack(6, 4)
+
 
     expect(board.isFleetSunk()).toBe(true)
   })

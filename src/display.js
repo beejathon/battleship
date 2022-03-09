@@ -93,12 +93,12 @@ const openModal = () => {
   modal.classList.toggle('visible');
   const direction = document.querySelector('#direction');
   direction.addEventListener('click', toggleDirection);
-  const start = document.querySelector('#startGame');
+  const start = document.getElementById('startGame');
   start.addEventListener('submit', handleStart);
 }
 
 const closeModal = () => {
-  const modal = document.querySelector('.modal');
+  const modal = document.querySelector('.modal-container');
   modal.classList.toggle('visible'); 
 }
 
@@ -107,10 +107,10 @@ const handleStart = (e) => {
   e.preventDefault();
   const dataForm = new FormData(e.target)
   const name = dataForm.get('name')
-  if (shipsPlaced === 4) {
+  if (shipsPlaced === 5) {
     startGame(name);
   }
-  return;
+  console.log(shipsPlaced)
 }
 
 const renderStartBoard = (user) => {
@@ -133,7 +133,7 @@ const renderStartBoard = (user) => {
     startBoard.appendChild(row)
   })
 
-  startBoard.addEventListener('click', handlePlacement)
+  startBoard.addEventListener('click', handlePlacement, false)
 }
 
 const handlePlacement = (e) => {
@@ -143,6 +143,7 @@ const handlePlacement = (e) => {
   let target = e.target;
   let x = target.id; 
   let y = target.parentElement.id;
+
   placeShips([y, x])
 }
 
@@ -150,7 +151,6 @@ const cellClick = (e) => {
   e.preventDefault();
   e.stopPropagation();
 
-  //get coordinates
   let target = e.target;
   let x = target.id; 
   let y = target.parentElement.id;

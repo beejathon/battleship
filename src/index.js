@@ -127,7 +127,10 @@ const placeShips = (coords) => {
   ]
 
   let index = shipsPlaced;
-  let result = user.board.placeShip(coords[0], coords[1], direction, ships[index])
+  let orientation = direction;
+  let result = user.board.placeShip(coords[0], coords[1], orientation, ships[index])
+
+  console.log(result)
 
   if (result) {
     shipsPlaced++;
@@ -136,7 +139,7 @@ const placeShips = (coords) => {
 }
 
 const toggleDirection = () => {
-  direction = (direction === 'vertical') ? 'horizontal' : 'vertical'
+  direction = (direction === 'horizontal') ? 'vertical' : 'horizontal'
 }
 
 init();

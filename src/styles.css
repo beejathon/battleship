@@ -14,7 +14,7 @@ header {
   margin: auto;
   margin-bottom: 20px;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.8);
   color: #eee;
 }
 
@@ -87,6 +87,10 @@ header {
   cursor: crosshair;
 }
 
+.clickable:hover {
+  background-color: #fff;
+}
+
 .placable {
   cursor: pointer;
 }
@@ -108,6 +112,7 @@ header {
   margin: auto;
   width: 40vw;
   height: 200px;
+  max-width: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   overflow: scroll;
 }
