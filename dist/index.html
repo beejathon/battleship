@@ -24,7 +24,7 @@
     </div>
   </div>
   <footer>
-    <div class="reset-image" id="resetImage"></div>
+    <div class="game-over" id="gameOver"></div>
     <div class="battle-log" id="battleLog">
       <h3>BATTLE LOG</h3>
       <ul></ul>
@@ -32,12 +32,13 @@
   </footer>
   <div class="modal-container">
     <div class="modal">
-      <h2>Start New Game</h2>
+      <h2>Place your ships:</h2>
       <div class="current-ship" id="currentShip"></div>
       <button class="direction" id="direction">Horizontal</button>
       <div class="start-board" id="startBoard"></div>
       <form id="startGame">
-        <input type="text" id="name" name="name" maxlength="10" placeholder="Enter a name" autofocus>
+        <label for="name">Enter a name:</label>
+        <input type="text" id="name" name="name" maxlength="15" required autofocus>
         <button id="startBtn" type="submit">Start</button>
       </form>
     </div>

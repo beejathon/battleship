@@ -7,8 +7,9 @@ import { direction } from "./index.js";
 import { shipsPlaced } from "./index.js";
 
 const init = () => {
-  const newBtn = document.querySelector('#newGame')
-  newBtn.addEventListener('click', newGame)
+  const newBtn = document.querySelector('#newGame');
+  newBtn.addEventListener('click', newGame);
+  newGame();
 }
 
 const renderUserBoard = (user) => {
@@ -66,6 +67,7 @@ const renderComputerBoard = (computer) => {
       }
       cell.classList.add('clickable')
       cell.setAttribute('id', `${j}`)
+      cell.setAttribute('data-cell', `${i}-${j}`)
       row.appendChild(cell)
     })
     computerBoard.appendChild(row)
@@ -74,26 +76,34 @@ const renderComputerBoard = (computer) => {
   const computerName = document.querySelector('#computerName')
   computerName.textContent = computer.name;
 
-  computerBoard.addEventListener('click', cellClick, false)
+  const cells = document.querySelectorAll('[data-cell]')
+  cells.forEach((cell) => {
+    cell.addEventListener('click', cellClick, false)
+  })
 }
 
-const resetBoards = () => {
+const resetDisplay = () => {
   const userBoard = document.querySelector('#userBoard')
   const userName = document. querySelector('#userName')
   const computerBoard = document.querySelector('#computerBoard')
   const computerName = document.querySelector('#computerName')
+  const gameOver = document.querySelector('#gameOver');
 
   userBoard.innerHTML = ''
   userName.textContent = ''
   computerBoard.innerHTML = ''
   computerName.textContent = ''
+  gameOver.innerHTML = ''
 }
 
 const openModal = () => {
   const modal = document.querySelector('.modal-container');
   modal.classList.toggle('visible');
-  const direction = document.querySelector('#direction');
-  direction.addEventListener('click', toggleDirection);
+  const directionBtn = document.querySelector('#direction');
+  directionBtn.addEventListener('click', toggleDirection);
+  directionBtn.addEventListener('click', () => {
+    directionBtn.textContent = (direction === 'horizontal') ? 'Horizontal' : 'Vertical';
+  })
   const start = document.getElementById('startGame');
   start.addEventListener('submit', handleStart);
 }
@@ -128,65 +138,104 @@ const renderStartBoard = (user) => {
         cell.classList.add('ship')
       }
       cell.setAttribute('id', `${j}`)
-      cell.setAttribute('data-id', `${i}${j}`)
+      cell.setAttribute('data-id', `${i}-${j}`)
       row.appendChild(cell)
     })
     startBoard.appendChild(row)
   })
 
-  startBoard.addEventListener('mouseenter', hoverOn)
-  startBoard.addEventListener('mouseleave', hoverOff)
-  startBoard.addEventListener('click', handlePlacement, false)
+  const cells = document.querySelectorAll('[data-id]');
+  cells.forEach((cell) => {
+    cell.addEventListener('mouseenter', hoverOn)
+    cell.addEventListener('mouseleave', hoverOff)
+    cell.addEventListener('click', handlePlacement, false)
+  })
 }
 
 const hoverOn = (e) => {
   e.preventDefault();
+  e.stopPropagation();
 
   let target = e.target;
-  let x = target.id;
-  let y = target.parentElement.id;
+  let x = parseInt(target.id);
+  let y = parseInt(target.parentElement.id);
+  let length;
+
+  switch (shipsPlaced) {
+    case 0:
+      length = 5;
+      break;
+    case 1:
+      length = 4;
+      break;
+    case 2:
+      length = 3;
+      break;
+    case 3:
+      length = 3;
+      break;
+    case 4:
+      length = 2;
+      break;
+  }
 
   if (direction === 'horizontal') {
-    if (shipsPlaced === 0) {
-      for (let i = x; i < x + 1; i++) {
-        let cell = document.querySelector(`[data-id="${y}-${i}"]`);
-        cell.classList.add('target-zone');
-      }
+    for (let i = x; i < x + length; i++) {
+      let cell = document.querySelector(`[data-id="${y}-${i}"]`);
+      if (cell === null) return;
+      cell.classList.add('target-zone');
     }
   }
   
   if (direction === 'vertical') {
-    if (shipsPlaced === 0) {
-      for (let i = y; i < y + 1; i++) {
-        let cell = document.querySelector(`[data-id="${i}-${x}"]`);
-        cell.classList.add('target-zone');
-      }
+    for (let i = y; i < y + length; i++) {
+      let cell = document.querySelector(`[data-id="${i}-${x}"]`);
+      if (cell === null) return;
+      cell.classList.add('target-zone');
     }
   }
 }
 
 const hoverOff = (e) => {
   e.preventDefault();
+  e.stopPropagation();
 
   let target = e.target;
-  let x = target.id;
-  let y = target.parentElement.id;
+  let x = parseInt(target.id);
+  let y = parseInt(target.parentElement.id);
+  let length;
+
+  switch (shipsPlaced) {
+    case 0:
+      length = 5;
+      break;
+    case 1:
+      length = 4;
+      break;
+    case 2:
+      length = 3;
+      break;
+    case 3:
+      length = 3;
+      break;
+    case 4:
+      length = 2;
+      break;
+  }
 
   if (direction === 'horizontal') {
-    if (shipsPlaced === 0) {
-      for (let i = x; i < x + 1; i++) {
-        let cell = document.querySelector(`[data-id="${y}-${i}"]`);
-        cell.classList.remove('target-zone');
-      }
+    for (let i = x; i < x + length; i++) {
+      let cell = document.querySelector(`[data-id="${y}-${i}"]`);
+      if (cell === null) return;
+      cell.classList.remove('target-zone');
     }
   }
   
   if (direction === 'vertical') {
-    if (shipsPlaced === 0) {
-      for (let i = y; i < y + 1; i++) {
-        let cell = document.querySelector(`[data-id="${i}-${x}"]`);
-        cell.classList.remove('target-zone');
-      }
+    for (let i = y; i < y + length; i++) {
+      let cell = document.querySelector(`[data-id="${i}-${x}"]`);
+      if (cell === null) return;
+      cell.classList.remove('target-zone');
     }
   }
 }
@@ -198,8 +247,8 @@ const handlePlacement = (e) => {
   if (shipsPlaced === 5) return;
 
   let target = e.target;
-  let x = target.id; 
-  let y = target.parentElement.id;
+  let x = parseInt(target.id); 
+  let y = parseInt(target.parentElement.id);
 
   placeShips([y, x])
 }
@@ -209,8 +258,8 @@ const cellClick = (e) => {
   e.stopPropagation();
 
   let target = e.target;
-  let x = target.id; 
-  let y = target.parentElement.id;
+  let x = parseInt(target.id); 
+  let y = parseInt(target.parentElement.id);
   userTurn([y, x]);
 }
 
@@ -226,13 +275,24 @@ const updateLog = (battleLog) => {
   ul.appendChild(df);
 }
 
+const displayGameOver = () => {
+  const gameOver = document.querySelector('#gameOver');
+  gameOver.innerHTML = `
+  <iframe src="https://giphy.com/embed/5xzjWHwBea0LK" width="480" height="359" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+  <p>
+    <a href="https://giphy.com/gifs/5xzjWHwBea0LK">via GIPHY</a>
+  </p>
+  `
+}
+
 export { 
   renderUserBoard, 
   renderComputerBoard,
-  resetBoards, 
+  resetDisplay, 
   updateLog,
   openModal,
   closeModal,
   renderStartBoard,
+  displayGameOver,
   init 
 };

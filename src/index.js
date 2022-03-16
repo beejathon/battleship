@@ -4,10 +4,11 @@ import { init } from './display.js';
 import { renderUserBoard } from './display.js';
 import { renderComputerBoard } from './display.js';
 import { updateLog } from './display.js'
-import { resetBoards } from './display.js'
+import { resetDisplay } from './display.js'
 import { openModal } from './display.js'
 import { closeModal } from './display.js'
 import { renderStartBoard } from './display.js'
+import { displayGameOver } from './display.js'
 
 let user;
 let computer;
@@ -45,7 +46,7 @@ const resetGame = () => {
   battleLog.splice(0, battleLog.length);
   direction = 'horizontal';
   shipsPlaced = 0;
-  resetBoards();
+  resetDisplay();
 }
 
 const userTurn = (coords) => {
@@ -78,9 +79,9 @@ const nextTurn = () => {
   const gameOver = checkWin();
   updateLog(battleLog);
   if (gameOver) {
-    let result = confirm('New Game?')
-    if (result) newGame();
-    else resetGame();
+    resetGame();
+    displayGameOver();
+    return;
   }
 
   //check active user
@@ -90,11 +91,11 @@ const nextTurn = () => {
 
 const checkWin = () => {
   if (user.board.isFleetSunk()) {
-    battleLog.unshift(`${user.name} HAS LOST THE BATTLE OF SHIPS`)
+    battleLog.unshift(`${computer.name} wins! Feed ${user.name} to the sharks.`)
     return true;
   }
   if (computer.board.isFleetSunk()) {
-    battleLog.unshift(`${computer.name} HAS LOST THE BATTLE OF SHIPS`)
+    battleLog.unshift(`${user.name} wins! Feed ${computer.name} to the sharks.`)
     return true;
   }
   return false;
@@ -138,14 +139,7 @@ const placeShips = (coords) => {
 }
 
 const toggleDirection = () => {
-  const directionBtn = document.querySelector('#direction');
-  if (direction === 'horizontal') {
-    direction = 'vertical';
-    directionBtn.textContent = 'Vertical';
-  } else {
-    direction = 'horizontal';
-    directionBtn.textContent = 'Horizontal';
-  }
+  direction = (direction === 'horizontal') ? 'vertical' : 'horizontal';
 }
 
 init();

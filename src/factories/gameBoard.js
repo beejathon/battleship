@@ -20,10 +20,7 @@ const createBoard = () => {
 
   board.fleet = [];
 
-  board.placeShip = function(a, b, direction, ship) {
-    const y = parseInt(a);
-    const x = parseInt(b);
-    
+  board.placeShip = function(y, x, direction, ship) {
     //check if placement obeys board rules
     if (!this.isPlacementValid(y, x, direction, ship.length)) return false;
 
