@@ -91,11 +91,11 @@ const nextTurn = () => {
 
 const checkWin = () => {
   if (user.board.isFleetSunk()) {
-    battleLog.unshift(`${computer.name} wins! Feed ${user.name} to the sharks.`)
+    battleLog.unshift(`${computer.name} wins! ${user.name} sleeps with the fishies!`)
     return true;
   }
   if (computer.board.isFleetSunk()) {
-    battleLog.unshift(`${user.name} wins! Feed ${computer.name} to the sharks.`)
+    battleLog.unshift(`${user.name} wins! ${computer.name} sleeps with the fishies!`)
     return true;
   }
   return false;
