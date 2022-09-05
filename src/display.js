@@ -42,7 +42,8 @@ const renderUserBoard = (user) => {
   })
 
   const userName = document.querySelector('#userName')
-  userName.textContent = user.name;
+  userName.textContent = (user.isActive) ? `${user.name} is aiming...` : user.name;
+ 
 }
 
 const renderComputerBoard = (computer) => {
@@ -74,12 +75,14 @@ const renderComputerBoard = (computer) => {
   })
 
   const computerName = document.querySelector('#computerName')
-  computerName.textContent = computer.name;
+  computerName.textContent = (computer.isActive) ? `${computer.name} is aming...` : computer.name;
 
-  const cells = document.querySelectorAll('[data-cell]')
-  cells.forEach((cell) => {
-    cell.addEventListener('click', cellClick, false)
-  })
+  if (!computer.isActive) {
+    const cells = document.querySelectorAll('[data-cell]')
+    cells.forEach((cell) => {
+      cell.addEventListener('click', cellClick, false)
+    })
+  }
 }
 
 const resetDisplay = () => {

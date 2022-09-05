@@ -65,7 +65,16 @@ const userTurn = (coords) => {
 
 const computerTurn = () => {
   //generate random attack and store result
-  let result = computer.randomAttack(user.board)
+  let result;
+
+  // TODO: Computer AI attack
+  // if (!computer.aiMode) {
+  //   computer.randomAttack(user.board)
+  // } else {
+  //   computer.smartAttack(user.board)
+  // }
+  // computer.aiMode = (result) ? true : false;
+  
   battleLog.unshift(`${computer.name}: ${result}!`)
   user.isActive = true;
   computer.isActive = false;
@@ -86,7 +95,9 @@ const nextTurn = () => {
 
   //check active user
   if (user.isActive) return;
-  if (computer.isActive) computerTurn();
+  if (computer.isActive) {
+    setTimeout(computerTurn, 2000)
+  } 
 }
 
 const checkWin = () => {

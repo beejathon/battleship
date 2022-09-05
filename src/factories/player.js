@@ -6,6 +6,7 @@ const createPlayer = (type, name) => {
   player.type = type;
   player.name = name;
   player.isActive = false;
+  player.aiMode = false;
   player.board = createBoard();
   player.moves = [];
 
@@ -34,6 +35,11 @@ const createPlayer = (type, name) => {
 
     return result;
   }
+
+  // TODO: Computer AI attack
+  // player.smartAttack = function(board) {
+  //   const lastMove = this.moves[0]
+  // }
 
   player.isRepeatMove = function(coords) {
     for (let i = 0; i < this.moves.length; i++) {
